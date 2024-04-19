@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PokeApp</string>
+
+    <!-- DIALOGS -->
+    <string name="error_dialog_title">Ups…</string>
+    <string name="error_dialog_dismiss">Close</string>
+    <string name="error_dialog_retry">Retry</string>
+
+    <!-- LANDING TYPES SCREEN -->
+    <plurals name="get_type_details_button">
+        <item quantity="one">Get Type Details</item>
+        <item quantity="many">Get Types Details</item>
+    </plurals>
+    <string name="no_type_selected">"Please select at least one type"</string>
+    <string name="type_landing_error_dialog_subtitle">There was an error obtaining the types from server. \n Please try it again.</string>
+
+    <!-- TYPE DETAILS SCREEN -->
+    <string name="type_details_header">"Searched type"</string>
+    <string name="very_weak_against">Very weak against</string>
+    <string name="weak_against">Weak against</string>
+    <string name="resistant_against">Resistant against</string>
+    <string name="very_resistant_against">Very resistant against</string>
+    <string name="immune_against">Immune against</string>
+
+    <string name="type_details_error_dialog_subtitle">There was an error obtaining the type data. \n Please try it again later.</string>
+
+    <!-- TYPES -->
+    <string name="steel">Steel</string>
+    <string name="rock">Rock</string>
+    <string name="fairy">Fairy</string>
+    <string name="flying">Flying</string>
+    <string name="poison">Poison</string>
+    <string name="grass">Grass</string>
+    <string name="electric">Electric</string>
+    <string name="fire">Fire</string>
+    <string name="dark">Dark</string>
+    <string name="ghost">Ghost</string>
+    <string name="normal">Normal</string>
+    <string name="water">Water</string>
+    <string name="ground">Ground</string>
+    <string name="fighting">Fighting</string>
+    <string name="dragon">Dragon</string>
+    <string name="bug">Bug</string>
+    <string name="ice">Ice</string>
+    <string name="psychic">Psychic</string>
+</resources>

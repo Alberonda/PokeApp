@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PokeApp</string>
+
+    <!-- DIALOGS -->
+    <string name="error_dialog_title">Vaya…</string>
+    <string name="error_dialog_dismiss">Cerrar</string>
+    <string name="error_dialog_retry">Reintentar</string>
+
+    <!-- LANDING TYPES SCREEN -->
+    <plurals name="get_type_details_button">
+        <item quantity="one">Obtener datos del tipo</item>
+        <item quantity="other">Obtener datos de los tipos</item>
+        <item quantity="many">Obtener datos de los tipos</item>
+    </plurals>
+    <string name="no_type_selected">"Elija al menos un tipo"</string>
+    <string name="type_landing_error_dialog_subtitle">Hubo un error obteniendo los tipos desde el servidor. \n Por favor inténtelo de nuevo.</string>
+
+    <!-- TYPE DETAILS SCREEN -->
+    <string name="type_details_header">"Tipo buscado"</string>
+    <string name="very_weak_against">Muy débil contra</string>
+    <string name="weak_against">Débil contra</string>
+    <string name="resistant_against">Resistente contra</string>
+    <string name="very_resistant_against">Muy resistente contra</string>
+    <string name="immune_against">No le afecta</string>
+
+    <string name="type_details_error_dialog_subtitle">Hubo un error obteniendo los datos del tipo. \n Por favor inténtelo de nuevo más tarde.</string>
+
+    <!-- TYPES -->
+    <string name="steel">Acero</string>
+    <string name="rock">Roca</string>
+    <string name="fairy">Hada</string>
+    <string name="flying">Volador</string>
+    <string name="poison">Veneno</string>
+    <string name="grass">Planta</string>
+    <string name="electric">Electrico</string>
+    <string name="fire">Fuego</string>
+    <string name="dark">Siniestro</string>
+    <string name="ghost">Fantasma</string>
+    <string name="normal">Normal</string>
+    <string name="water">Agua</string>
+    <string name="ground">Tierra</string>
+    <string name="fighting">Lucha</string>
+    <string name="dragon">Dragón</string>
+    <string name="bug">Bicho</string>
+    <string name="ice">Hielo</string>
+    <string name="psychic">Psíquico</string>
+</resources>
