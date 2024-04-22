@@ -31,8 +31,8 @@ jobs:
         id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
         with:
-          paths: |
-            ${{ github.workspace }}/**/build/reports/tests/testDebugUnitTest/index.xml
+          paths:
+            ${{ github.workspace }}/**/build/test-results/testDebugUnitTest/*Test.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 40
           min-coverage-changed-files: 60

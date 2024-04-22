@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs")
+    id("jacoco")
 }
 
 apply(from = "$projectDir/jacoco.gradle")

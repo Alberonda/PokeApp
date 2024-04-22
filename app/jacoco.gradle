@@ -4,16 +4,12 @@ jacoco {
     toolVersion = "0.8.8"
 }
 
-
 tasks.register('jacocoReport', JacocoReport) {
     dependsOn 'testDebugUnitTest'
     reports {
-        csv { enabled false } // change if needed
-        xml { enabled false } // change if needed
-        html {
-            enabled true
-            destination file("${layout.buildDirectory}/coverage-report")
-        }
+        csv { enabled false }
+        xml { enabled true }
+        html { enabled false }
     }
 
     // Setup the .class, source, and execution directories
