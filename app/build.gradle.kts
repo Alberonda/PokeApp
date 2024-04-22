@@ -6,6 +6,8 @@ plugins {
     id("androidx.navigation.safeargs")
 }
 
+apply(from = "$projectDir/jacoco.gradle")
+
 android {
     namespace = "com.example.pokeapp"
     compileSdk = 34

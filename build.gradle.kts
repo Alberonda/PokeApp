@@ -4,5 +4,4 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
     id("com.google.dagger.hilt.android") version "2.48" apply false
     id("androidx.navigation.safeargs") version "2.5.0" apply false
-    id("jacoco")
 }
