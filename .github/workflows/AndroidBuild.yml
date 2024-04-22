@@ -26,10 +26,16 @@ jobs:
       - name: Run unit test with coverage check
         run: ./gradlew app:jacocoTestCoverageVerification
 
-      - uses: actions/upload-artifact@v3
+      - name: Add coverage to PR
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.6.1
         with:
-          name: android-widget-cov-report
-          path: build/app/reports/coverage/jacocoTestReportDebug/html/
+          paths: |
+            ${{ github.workspace }}/**/build/reports/jacoco/prodNormalDebugCoverage/prodNormalDebugCoverage.xml,
+            ${{ github.workspace }}/**/build/reports/jacoco/**/debugCoverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 40
+          min-coverage-changed-files: 60
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.3.2
