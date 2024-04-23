@@ -56,6 +56,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    testCoverage.jacocoVersion = "0.8.12"
 }
 
 dependencies {
@@ -81,8 +82,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata)
 
     // Dependency injection
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
     // Navigation
@@ -98,6 +99,9 @@ dependencies {
     testImplementation(libs.androidx.core)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
+
+    //Jacoco
+    implementation(libs.org.jacoco.core)
 }
 
 kapt {

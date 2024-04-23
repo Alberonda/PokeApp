@@ -1,9 +1,5 @@
 apply plugin: 'jacoco'
 
-jacoco {
-    toolVersion = "0.8.8"
-}
-
 tasks.register('jacocoReport', JacocoReport) {
     dependsOn 'testDebugUnitTest'
     reports {
