@@ -35,7 +35,7 @@ android {
             )
         }
         debug {
-            enableAndroidTestCoverage = true
+            // enableAndroidTestCoverage = true
             enableUnitTestCoverage = true
         }
     }
