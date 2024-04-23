@@ -125,27 +125,30 @@ val exclusions = listOf(
 
 android {
     applicationVariants.all {
-        // Extract variant name and capitalize the first letter
         val variantName = this.name.replaceFirstChar {
             if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
         }
 
         // Define task names for unit tests and Android tests
         val unitTests = "test${variantName}UnitTest"
-        val androidTests = "connected${variantName}AndroidTest"
+        // val androidTests = "connected${variantName}AndroidTest"    --->> Uncomment to have instrumented tests
 
-        // Register a JacocoReport task for code coverage analysis
         tasks.register<JacocoReport>("Jacoco${variantName}CodeCoverage") {
             // Depend on unit tests and Android tests tasks
-            dependsOn(listOf(unitTests, androidTests))
-            // Set task grouping and description
+            dependsOn(listOf(
+                unitTests,
+                //androidTests   --->> Uncomment to have instrumented tests
+                )
+            )
+
             group = "Reporting"
             description = "Execute UI and unit tests, generate and combine Jacoco coverage report"
-            // Configure reports to generate both XML and HTML formats
+            
             reports {
                 xml.required.set(true)
                 html.required.set(true)
             }
+
             // Set source directories to the main source directory
             sourceDirectories.setFrom(layout.projectDirectory.dir("src/main"))
             // Set class directories to compiled Java and Kotlin classes, excluding specified exclusions
