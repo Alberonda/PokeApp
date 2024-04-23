@@ -21,9 +21,6 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Build with Gradle
-        run: ./gradlew build
-
       - name: Run unit test with coverage check
         run: ./gradlew app:JacocoDebugCodeCoverage --stacktrace
 
