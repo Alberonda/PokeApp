@@ -16,7 +16,7 @@ mockk = "1.13.10"
 activityCompose = "1.9.0"
 composeBom = "2024.04.01"
 navigationCompose = "2.7.7"
-orgJacocoCore = "0.8.7"
+orgJacocoCore = "0.8.8"
 
 [libraries]
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
