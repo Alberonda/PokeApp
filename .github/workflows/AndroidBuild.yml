@@ -25,14 +25,14 @@ jobs:
         run: ./gradlew build
 
       - name: Run unit test with coverage check
-        run: ./gradlew app:jacocoReport
+        run: ./gradlew app:jacocoTestGplayDebugUnitTestReport
 
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
         with:
           paths:
-            ${{ github.workspace }}/**/build/test-results/testDebugUnitTest/*Test.xml
+            ${{github.workspace}}app/build/reports/coverage/test/debug/report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 40
           min-coverage-changed-files: 60

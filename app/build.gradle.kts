@@ -4,7 +4,7 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs")
-    id("jacoco")
+    jacoco
 }
 
 apply(from = "$projectDir/jacoco.gradle")
@@ -33,6 +33,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            enableUnitTestCoverage = true
         }
         debug {
             enableUnitTestCoverage = true
