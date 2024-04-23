@@ -25,7 +25,7 @@ jobs:
         run: ./gradlew build
 
       - name: Run unit test with coverage check
-        run: ./gradlew app:JacocoDebugCodeCoverage --scan
+        run: ./gradlew app:JacocoDebugCodeCoverage --debug
 
       - name: Add coverage to PR
         id: jacoco
