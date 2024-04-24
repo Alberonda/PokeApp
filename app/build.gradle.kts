@@ -90,15 +90,17 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // Testing
+    // Unit testing
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.core)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    // Instrumented testing
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    testImplementation(libs.androidx.core)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
 
     //Jacoco
     implementation(libs.org.jacoco.core)
@@ -173,14 +175,15 @@ val exclusions = listOf(
     "**/compose/**/*",
 
     // Uncomment this for instrumented testing
-    "**/*Screen*.*",
+    "**/*Activity*.*",
     "**/navigation/**/*",
+    "**/*UiState*.*",
+    "**/*ScreenKt*.*",
 
     "**/*Args*.*", /* filtering Navigation Component generated classes */
     "**/*Directions*.*", /* filtering Navigation Component generated classes */
     "**/*inlined*.class", /* filtering inlined classes */
     "**/composables/**"
-    /* INSERT ANY OTHER JUNK YOU WANT FILTERED OUT HERE */
 )
 
 android {
