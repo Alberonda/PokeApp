@@ -1,4 +1,4 @@
-name: AndroidBuild
+name: PullRequestCoverage
 
 on:
   pull_request:
