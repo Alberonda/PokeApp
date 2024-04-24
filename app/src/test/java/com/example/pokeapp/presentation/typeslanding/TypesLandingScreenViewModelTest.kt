@@ -43,8 +43,8 @@ class TypesLandingScreenViewModelTest {
         }
 
         Assert.assertEquals(
-            viewModel.uiState.value,
-            expectedUiState
+            expectedUiState,
+            viewModel.uiState.value
         )
     }
 
@@ -68,8 +68,8 @@ class TypesLandingScreenViewModelTest {
         }
 
         Assert.assertEquals(
-            viewModel.uiState.value,
-            expectedUiState
+            expectedUiState,
+            viewModel.uiState.value
         )
     }
 

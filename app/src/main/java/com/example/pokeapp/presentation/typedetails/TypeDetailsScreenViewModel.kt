@@ -38,9 +38,9 @@ class TypeDetailsScreenViewModel @Inject constructor(
 
     private val typesToSearch: List<String> = checkNotNull<String>(
         savedStateHandle[TypeDetails.selectedTypeArg]
-    ).split(NAMES_SEPARATOR)
+    ).split(NAMES_SEPARATOR).filterNot { it.isBlank() }
 
-    private val searchedTypesAsUiString
+    private val searchedTypesAsUiData
         get() = PokeTypeUiData.mapDomainToUiEntities(
             typesToSearch.map { PokeType(it) }
         )
@@ -56,35 +56,31 @@ class TypeDetailsScreenViewModel @Inject constructor(
     private fun getTypeDetails(typesToSearch: List<String>) {
         _uiState.value = TypeDetailsScreenUiState(isLoading = true, throwError = false)
         viewModelScope.launch {
-            try {
-                withContext(defaultDispatcher) {
-                    val deferredResults = typesToSearch.map {
-                        async { getTypeDetailsUseCase.execute(it) }
-                    }
-                    awaitAll(*deferredResults.toTypedArray())
-                }.run {
-                    val mappedResult = this.filter { it.isSuccess }.mapNotNull {
-                        it.getOrNull()
-                    }
+            withContext(defaultDispatcher) {
+                val deferredResults = typesToSearch.map {
+                    async { getTypeDetailsUseCase.execute(it) }
+                }
+                awaitAll(*deferredResults.toTypedArray())
+            }.run {
+                val mappedResult = this.filter { it.isSuccess }.mapNotNull {
+                    it.getOrNull()
+                }
 
-                    if (mappedResult.isNotEmpty()) {
-                        _uiState.value = TypeDetailsScreenUiState(
-                            typesDetails = mapDomainToUiEntities(
-                                PokeTypeDetails(
-                                    name = mappedResult.joinToString(
-                                        NAMES_SEPARATOR
-                                    ) { it.name },
-                                    attackerTypesRelation = mappedResult.flatMap { it.attackerTypesRelation },
-                                    defenderTypesRelation = mappedResult.flatMap { it.defenderTypesRelation }
-                                )
+                if (mappedResult.isNotEmpty()) {
+                    _uiState.value = TypeDetailsScreenUiState(
+                        typesDetails = mapDomainToUiEntities(
+                            PokeTypeDetails(
+                                name = mappedResult.joinToString(
+                                    NAMES_SEPARATOR
+                                ) { it.name },
+                                attackerTypesRelation = mappedResult.flatMap { it.attackerTypesRelation },
+                                defenderTypesRelation = mappedResult.flatMap { it.defenderTypesRelation }
                             )
                         )
-                    } else {
-                        _uiState.value = TypeDetailsScreenUiState(throwError = true)
-                    }
+                    )
+                } else {
+                    _uiState.value = TypeDetailsScreenUiState(throwError = true)
                 }
-            } catch (e: Exception) {
-                _uiState.value = TypeDetailsScreenUiState(throwError = true)
             }
         }
     }
@@ -96,12 +92,12 @@ class TypeDetailsScreenViewModel @Inject constructor(
         }.mapValues { (_, relations) ->
             relations.reduce { acc, next ->
                 Pair(
-                    acc. first,
+                    acc.first,
                     acc.second * next.second
                 )
             }
         }.values.mapNotNull { relationPair ->
-            PokeTypeUiData.mapDomainToUiResources(relationPair.first)?.let{ typeResources ->
+            PokeTypeUiData.mapDomainToUiResources(relationPair.first)?.let { typeResources ->
                 Pair(
                     PokeTypeUiData(typeResources),
                     relationPair.second
@@ -110,12 +106,17 @@ class TypeDetailsScreenViewModel @Inject constructor(
         }
 
         return TypeDetailsScreenUiData(
-            searchedTypes = searchedTypesAsUiString,
-            veryEffectiveRelations = groupedRelations.filter { it.second == QUAD_DAMAGE_FACTOR }.map { it.first },
-            effectiveRelations = groupedRelations.filter { it.second == DOUBLE_DAMAGE_FACTOR }.map { it.first },
-            notEffectiveRelations = groupedRelations.filter { it.second == HALF_DAMAGE_FACTOR }.map { it.first },
-            veryNotEffectiveRelations = groupedRelations.filter { it.second == QUARTER_DAMAGE_FACTOR }.map { it.first },
-            unaffectedRelations = groupedRelations.filter { it.second == NO_DAMAGE_FACTOR }.map { it.first },
+            searchedTypes = searchedTypesAsUiData,
+            veryEffectiveRelations = groupedRelations.filter { it.second == QUAD_DAMAGE_FACTOR }
+                .map { it.first },
+            effectiveRelations = groupedRelations.filter { it.second == DOUBLE_DAMAGE_FACTOR }
+                .map { it.first },
+            notEffectiveRelations = groupedRelations.filter { it.second == HALF_DAMAGE_FACTOR }
+                .map { it.first },
+            veryNotEffectiveRelations = groupedRelations.filter { it.second == QUARTER_DAMAGE_FACTOR }
+                .map { it.first },
+            unaffectedRelations = groupedRelations.filter { it.second == NO_DAMAGE_FACTOR }
+                .map { it.first },
         )
     }
 }
