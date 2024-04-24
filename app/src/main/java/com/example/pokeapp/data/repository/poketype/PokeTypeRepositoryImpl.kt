@@ -1,6 +1,5 @@
 package com.example.pokeapp.data.repository.poketype
 
-import com.example.pokeapp.data.source.network.entity.ApiPokeType
 import com.example.pokeapp.data.source.network.PokeTypeNetworkDataSource
 import com.example.pokeapp.domain.entity.PokeType
 import com.example.pokeapp.domain.entity.PokeTypeDetails

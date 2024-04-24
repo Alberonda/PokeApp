@@ -21,5 +21,3 @@ class GetAllTypesUseCaseImpl @Inject constructor(
         private const val NUMBER_OF_EXISTING_TYPES = 18
     }
 }
-
-

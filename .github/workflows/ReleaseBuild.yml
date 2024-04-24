@@ -1,15 +1,12 @@
-name: AndroidBuild
+name: ReleaseBuild
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "master" ]
-  pull_request:
     branches: [ "master" ]
 
 jobs:
   build:
+    permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
@@ -30,4 +27,3 @@ jobs:
         with:
           name: PokeApp.apk
           path: app/build/outputs/apk/debug/app-debug.apk
-

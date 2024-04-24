@@ -1,0 +1,44 @@
+name: PullRequestCoverage
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.3
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Run unit test with coverage check
+        run: ./gradlew app:JacocoDebugCodeCoverage --stacktrace
+
+      - name: Add coverage to PR
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.6.1
+        with:
+          paths:
+            ${{github.workspace}}/app/build/reports/jacoco/JacocoDebugCodeCoverage/JacocoDebugCodeCoverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 40
+          min-coverage-changed-files: 60
+          title:  ':shipit: Jacoco Code Coverage :shipit:'
+          update-comment: true
+          pass-emoji: ':o:'
+          fail-emoji: ':x:'
+
+      - name: Fail PR if overall coverage is less than 80%
+        if: ${{ steps.jacoco.outputs.coverage-overall < 80.0 }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed('Overall coverage is less than 80%!')    
