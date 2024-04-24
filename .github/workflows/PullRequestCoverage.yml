@@ -42,9 +42,3 @@ jobs:
         with:
           script: |
             core.setFailed('Overall coverage is less than 80%!')    
-
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.3.2
-        with:
-          name: PokeApp.apk
-          path: app/build/outputs/apk/debug/app-debug.apk
