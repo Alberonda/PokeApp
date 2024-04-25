@@ -11,6 +11,7 @@
     <plurals name="get_type_details_button">
         <item quantity="one">Get Type Details</item>
         <item quantity="many">Get Types Details</item>
+        <item quantity="other">Get Types Details</item>
     </plurals>
     <string name="no_type_selected">"Please select at least one type"</string>
     <string name="type_landing_error_dialog_subtitle">There was an error obtaining the types from server. \n Please try it again.</string>
