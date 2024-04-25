@@ -23,17 +23,17 @@ class GetTypeDetailsUseCaseImplTest {
     @Test
     fun `execute with success response from repository`() = runTest {
         // Given
-        val typeNameToSearch = "example name"
+        val typesToSearch = listOf("type1", "type2")
         val serverResponse = getMockedPokeTypeDetailsResponse()
 
-        coEvery { pokeTypeRepository.getTypeDetails(typeNameToSearch) } returns serverResponse
+        coEvery { pokeTypeRepository.getTypesDetails(typesToSearch) } returns serverResponse
 
         val expectedResult = Result.success(
             serverResponse
         )
 
         // When
-        val result = useCase.execute(typeNameToSearch)
+        val result = useCase.execute(typesToSearch)
 
         // Then
         Assert.assertEquals(
@@ -45,17 +45,17 @@ class GetTypeDetailsUseCaseImplTest {
     @Test
     fun `execute with failure response from repository`() = runTest {
         // Given
-        val typeNameToSearch = "example name"
+        val typesToSearch = listOf("type1", "type2")
         val serverException = Exception("Server exception")
 
-        coEvery { pokeTypeRepository.getTypeDetails(typeNameToSearch) } throws serverException
+        coEvery { pokeTypeRepository.getTypesDetails(typesToSearch) } throws serverException
 
         val expectedResult = Result.failure<Exception>(
             serverException
         )
 
         // When
-        val result = useCase.execute(typeNameToSearch)
+        val result = useCase.execute(typesToSearch)
 
         // Then
         Assert.assertEquals(
