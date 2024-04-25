@@ -8,10 +8,10 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.pokeapp.base.Constants.TYPES_NAMES_SEPARATOR
 import com.example.pokeapp.presentation.typeslanding.AllTypesScreen
 import com.example.pokeapp.presentation.typedetails.TypeDetailsScreen
 import com.example.pokeapp.presentation.typedetails.TypeDetailsScreenViewModel
-import com.example.pokeapp.presentation.typedetails.TypeDetailsScreenViewModel.Companion.NAMES_SEPARATOR
 import com.example.pokeapp.presentation.typeslanding.TypesLandingScreenViewModel
 
 
@@ -32,7 +32,7 @@ fun PokeAppNavHost(
                 onGetDetailsClicked = { selectedTypes ->
                     navController.navigateToTypeDetails(
                         selectedTypes.joinToString(
-                            NAMES_SEPARATOR
+                            TYPES_NAMES_SEPARATOR
                         ) { it.name }
                     )
                 },
@@ -61,7 +61,7 @@ fun PokeAppNavHost(
                 onGetDetailsClicked = { selectedTypes ->
                     navController.navigateToTypeDetails(
                         selectedTypes.joinToString(
-                            NAMES_SEPARATOR
+                            TYPES_NAMES_SEPARATOR
                         ) { it.name }
                     )
                 },
