@@ -7,6 +7,7 @@ import com.example.pokeapp.domain.usecase.gettypedetails.GetTypeDetailsUseCase
 import com.example.pokeapp.presentation.typedetails.entity.TypeDetailsScreenUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiResources
+import com.example.pokeapp.ui.base.UiState
 import com.example.pokeapp.ui.navigation.TypeDetails
 import com.example.pokeapp.utils.MainCoroutineRule
 import io.mockk.coEvery
@@ -39,8 +40,8 @@ class TypeDetailsScreenViewModelTest {
             getMockedSuccessUseCaseResponse()
         }
 
-        val expectedUiState = TypeDetailsScreenUiState(
-            typesDetails = TypeDetailsScreenUiData(
+        val expectedUiState = UiState.Success(
+            TypeDetailsScreenUiData(
                 searchedTypes= listOf(
                     PokeTypeUiData(PokeTypeUiResources.GROUND),
                     PokeTypeUiData(PokeTypeUiResources.DRAGON)
@@ -84,9 +85,7 @@ class TypeDetailsScreenViewModelTest {
 
         every { savedStateHandle.get<String>(TypeDetails.selectedTypeArg) } returns typesToSearch
 
-        val expectedUiState = TypeDetailsScreenUiState(
-            throwError = true
-        )
+        val expectedUiState = UiState.Error()
 
         // When
         instanceViewModel()
@@ -111,9 +110,7 @@ class TypeDetailsScreenViewModelTest {
         every { savedStateHandle.get<String>(TypeDetails.selectedTypeArg) } returns typesToSearch
         coEvery { getTypeDetailsUseCase.execute(listOf("type 1")) } returns useCaseResponse
 
-        val expectedUiState = TypeDetailsScreenUiState(
-            throwError = true
-        )
+        val expectedUiState = UiState.Error()
 
         // When
         instanceViewModel()

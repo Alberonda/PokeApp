@@ -39,12 +39,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.PokeAppTheme
 import com.example.pokeapp.R
-import com.example.pokeapp.base.CardFace
-import com.example.pokeapp.base.quantityStringResource
-import com.example.pokeapp.base.ErrorRetryDialog
-import com.example.pokeapp.base.FlipCard
+import com.example.pokeapp.ui.base.components.CardFace
+import com.example.pokeapp.ui.base.components.quantityStringResource
+import com.example.pokeapp.ui.base.components.ErrorRetryDialog
+import com.example.pokeapp.ui.base.components.FlipCard
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiResources
+import com.example.pokeapp.ui.base.UiState
 
 @Composable
 fun AllTypesScreen(
@@ -58,12 +59,12 @@ fun AllTypesScreen(
 
     val maxSelectableTypes = 2
 
-    when {
-        uiState.allTypes.isNotEmpty() ->
+    when(val state = uiState) {
+        is UiState.Success ->
             AllTypesScreenWithData(
-                uiState.allTypes,
+                state.data.allTypes,
                 onCardClicked = { pokeType ->
-                    val numberOfSelected = uiState.allTypes.filter { it.selected }.size
+                    val numberOfSelected = state.data.allTypes.filter { it.selected }.size
                     if (pokeType.selected || numberOfSelected < maxSelectableTypes) {
                         pokeType.selected = !pokeType.selected
                         true
@@ -73,13 +74,13 @@ fun AllTypesScreen(
                 },
                 onGetDetailsClicked = {
                     onGetDetailsClicked(
-                        uiState.allTypes.filter { it.selected }
+                        state.data.allTypes.filter { it.selected }
                     )
                 },
                 widthSizeClass = widthSizeClass
             )
 
-        uiState.isLoading -> {
+        is UiState.Loading -> {
             Box(modifier.fillMaxSize()) {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onSurface,
@@ -88,7 +89,7 @@ fun AllTypesScreen(
             }
         }
 
-        else ->
+        is UiState.Error ->
             ErrorRetryDialog(
                 R.string.type_details_error_dialog_subtitle,
                 onRetryClicked = {

@@ -39,10 +39,11 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.PokeAppTheme
 import com.example.pokeapp.R
 import com.example.pokeapp.base.SLASH
-import com.example.pokeapp.base.ErrorDialog
+import com.example.pokeapp.ui.base.components.ErrorDialog
 import com.example.pokeapp.presentation.typedetails.entity.TypeDetailsScreenUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiResources
+import com.example.pokeapp.ui.base.UiState
 
 @Composable
 fun TypeDetailsScreen(
@@ -54,16 +55,14 @@ fun TypeDetailsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    when {
-        uiState.typesDetails != null ->
-            uiState.typesDetails?.let {
-                TypeDetailsContent(
-                    it,
-                    widthSizeClass = widthSizeClass
-                )
-            }
+    when(val state = uiState) {
+        is UiState.Success ->
+            TypeDetailsContent(
+                state.data,
+                widthSizeClass = widthSizeClass
+            )
 
-        uiState.isLoading -> {
+        is UiState.Loading -> {
             Box(modifier.fillMaxSize()) {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onSurface,
@@ -72,7 +71,7 @@ fun TypeDetailsScreen(
             }
         }
 
-        else ->
+        is UiState.Error ->
             ErrorDialog(
                 R.string.type_details_error_dialog_subtitle,
                 onDismissClicked = onBackNavigation

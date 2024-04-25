@@ -164,9 +164,7 @@ val exclusions = listOf(
     "**/hilt_aggregated_deps/*",
 
     // Views and data clases
-    "**/*Card*.*",
-    "**/*Dialog*.*",
-    "**/*Resources*.*",
+    "**/components/**",
     "**/theme/**",
     "**/constant/**/*",
     "**/entity/**/*",

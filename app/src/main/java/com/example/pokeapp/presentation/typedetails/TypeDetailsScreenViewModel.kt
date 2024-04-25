@@ -15,6 +15,7 @@ import com.example.pokeapp.domain.entity.PokeTypeDetails.Companion.QUARTER_DAMAG
 import com.example.pokeapp.domain.usecase.gettypedetails.GetTypeDetailsUseCase
 import com.example.pokeapp.presentation.typedetails.entity.TypeDetailsScreenUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
+import com.example.pokeapp.ui.base.UiState
 import com.example.pokeapp.ui.navigation.TypeDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,8 +33,9 @@ class TypeDetailsScreenViewModel @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(TypeDetailsScreenUiState())
-    val uiState: StateFlow<TypeDetailsScreenUiState> = _uiState.asStateFlow()
+    private val _uiState:
+            MutableStateFlow<UiState<TypeDetailsScreenUiData>> = MutableStateFlow(UiState.Loading)
+    val uiState: StateFlow<UiState<TypeDetailsScreenUiData>> = _uiState.asStateFlow()
 
     private val typesToSearch: List<String> = checkNotNull<String>(
         savedStateHandle[TypeDetails.selectedTypeArg]
@@ -48,21 +50,21 @@ class TypeDetailsScreenViewModel @Inject constructor(
         if (typesToSearch.isNotEmpty()){
             getTypeDetails(typesToSearch)
         } else {
-            _uiState.value = TypeDetailsScreenUiState(throwError = true)
+            _uiState.value = UiState.Error()
         }
     }
 
     private fun getTypeDetails(typesToSearch: List<String>) {
-        _uiState.value = TypeDetailsScreenUiState(isLoading = true, throwError = false)
+        _uiState.value = UiState.Loading
         viewModelScope.launch {
             withContext(defaultDispatcher) {
                 getTypeDetailsUseCase.execute(typesToSearch)
             }.run {
                 _uiState.value = this.getOrNull()?.let {
-                    TypeDetailsScreenUiState(
-                        typesDetails = mapDomainToUiEntities(it)
+                    UiState.Success(
+                        mapDomainToUiEntities(it)
                     )
-                } ?: TypeDetailsScreenUiState(throwError = true)
+                } ?: UiState.Error()
             }
         }
     }

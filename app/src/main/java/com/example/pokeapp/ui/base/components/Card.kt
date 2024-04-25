@@ -1,4 +1,4 @@
-package com.example.pokeapp.base
+package com.example.pokeapp.ui.base.components
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.FastOutSlowInEasing
