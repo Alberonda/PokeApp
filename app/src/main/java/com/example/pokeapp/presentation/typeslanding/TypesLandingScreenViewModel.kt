@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.pokeapp.di.DefaultDispatcher
 import com.example.pokeapp.domain.usecase.getalltypes.GetAllTypesUseCase
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
+import com.example.pokeapp.presentation.typeslanding.entity.TypesLandingScreenUiData
+import com.example.pokeapp.ui.base.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,33 +20,37 @@ import javax.inject.Inject
 class TypesLandingScreenViewModel @Inject constructor(
     private val getAllTypesUseCase: GetAllTypesUseCase,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
-): ViewModel() {
-    private val _uiState = MutableStateFlow(TypesLandingScreenUiState())
-    val uiState: StateFlow<TypesLandingScreenUiState> = _uiState.asStateFlow()
+) : ViewModel() {
+    private val _uiState:
+            MutableStateFlow<UiState<TypesLandingScreenUiData>> = MutableStateFlow(UiState.Loading)
+    val uiState: StateFlow<UiState<TypesLandingScreenUiData>> = _uiState.asStateFlow()
 
     init {
         getAllTypesData()
     }
 
     fun getAllTypesData() {
-        _uiState.value = TypesLandingScreenUiState(isLoading = true, throwError = false)
+        _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
                 withContext(defaultDispatcher) {
                     getAllTypesUseCase.execute()
                 }.run {
                     if (this.isSuccess) {
-                        _uiState.value = TypesLandingScreenUiState(
-                            allTypes = PokeTypeUiData.mapDomainToUiEntities(
-                                this.getOrDefault(emptyList())
+                        _uiState.value =
+                            UiState.Success(
+                                TypesLandingScreenUiData(
+                                    PokeTypeUiData.mapDomainToUiEntities(
+                                        this.getOrDefault(emptyList())
+                                    )
+                                )
                             )
-                        )
                     } else {
-                        _uiState.value = TypesLandingScreenUiState(throwError = true)
+                        _uiState.value = UiState.Error()
                     }
                 }
             } catch (e: Exception) {
-                _uiState.value = TypesLandingScreenUiState(throwError = true)
+                _uiState.value = UiState.Error()
             }
         }
     }

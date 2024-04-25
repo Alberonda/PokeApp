@@ -1,4 +1,4 @@
-package com.example.pokeapp.base
+package com.example.pokeapp.ui.base.components
 
 import androidx.annotation.PluralsRes
 import androidx.compose.runtime.Composable

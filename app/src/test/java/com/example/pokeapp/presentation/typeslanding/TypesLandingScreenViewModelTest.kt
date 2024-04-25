@@ -3,6 +3,7 @@ package com.example.pokeapp.presentation.typeslanding
 import com.example.pokeapp.domain.entity.PokeType
 import com.example.pokeapp.domain.usecase.getalltypes.GetAllTypesUseCase
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
+import com.example.pokeapp.presentation.typeslanding.entity.TypesLandingScreenUiData
 import com.example.pokeapp.utils.MainCoroutineRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -28,7 +29,7 @@ class TypesLandingScreenViewModelTest {
 
         coEvery { getAllTypesUseCase.execute() } returns useCaseResponse
 
-        val expectedUiState = TypesLandingScreenUiState(
+        val expectedUiState = TypesLandingScreenUiData(
             allTypes = PokeTypeUiData.mapDomainToUiEntities(
                 useCaseResponse.getOrDefault(emptyList())
             )
@@ -55,7 +56,7 @@ class TypesLandingScreenViewModelTest {
 
         coEvery { getAllTypesUseCase.execute() } returns useCaseResponse
 
-        val expectedUiState = TypesLandingScreenUiState(
+        val expectedUiState = TypesLandingScreenUiData(
             throwError = true
         )
 
