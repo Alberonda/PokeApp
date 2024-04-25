@@ -1,7 +1,6 @@
 package com.example.pokeapp.presentation.typedetails
 
 import androidx.lifecycle.SavedStateHandle
-import com.example.pokeapp.base.EMPTY
 import com.example.pokeapp.domain.entity.PokeType
 import com.example.pokeapp.domain.entity.PokeTypeDetails
 import com.example.pokeapp.domain.usecase.gettypedetails.GetTypeDetailsUseCase
@@ -37,11 +36,7 @@ class TypeDetailsScreenViewModelTest {
         every { savedStateHandle.get<String>(TypeDetails.selectedTypeArg) } returns typesToSearch
 
         coEvery { getTypeDetailsUseCase.execute(any()) } answers {
-            when (firstArg<String>()) {
-                "ground" -> getMockedSuccessUseCaseGroundResponse()
-                "dragon" -> getMockedSuccessUseCaseDragonResponse()
-                else -> getMockedSuccessUseCaseDefaultResponse()
-            }
+            getMockedSuccessUseCaseResponse()
         }
 
         val expectedUiState = TypeDetailsScreenUiState(
@@ -54,15 +49,16 @@ class TypeDetailsScreenViewModelTest {
                     PokeTypeUiData(PokeTypeUiResources.ELECTRIC),
                 ),
                 effectiveRelations = listOf(
-                    PokeTypeUiData(PokeTypeUiResources.GRASS),
                     PokeTypeUiData(PokeTypeUiResources.DRAGON),
                     PokeTypeUiData(PokeTypeUiResources.FAIRY)
                 ),
                 notEffectiveRelations = listOf(
-                    PokeTypeUiData(PokeTypeUiResources.FIRE)
+                    PokeTypeUiData(PokeTypeUiResources.WATER),
+                    PokeTypeUiData(PokeTypeUiResources.FIRE),
+                    PokeTypeUiData(PokeTypeUiResources.NORMAL)
                 ),
                 veryNotEffectiveRelations = listOf(
-                    PokeTypeUiData(PokeTypeUiResources.NORMAL)
+                    PokeTypeUiData(PokeTypeUiResources.GROUND)
                 )
             )
         )
@@ -72,9 +68,7 @@ class TypeDetailsScreenViewModelTest {
 
         // Then
         coVerify(exactly = 1) {
-            getTypeDetailsUseCase.execute("ground")
-            getTypeDetailsUseCase.execute("dragon")
-            getTypeDetailsUseCase.execute("type 3")
+            getTypeDetailsUseCase.execute(listOf("ground", "dragon", "type 3"))
         }
 
         Assert.assertEquals(
@@ -99,7 +93,7 @@ class TypeDetailsScreenViewModelTest {
 
         // Then
         coVerify(exactly = 0) {
-            getTypeDetailsUseCase.execute(typesToSearch)
+            getTypeDetailsUseCase.execute(any())
         }
 
         Assert.assertEquals(
@@ -115,7 +109,7 @@ class TypeDetailsScreenViewModelTest {
         val useCaseResponse = getMockedFailureUseCaseResponse()
 
         every { savedStateHandle.get<String>(TypeDetails.selectedTypeArg) } returns typesToSearch
-        coEvery { getTypeDetailsUseCase.execute(typesToSearch) } returns useCaseResponse
+        coEvery { getTypeDetailsUseCase.execute(listOf("type 1")) } returns useCaseResponse
 
         val expectedUiState = TypeDetailsScreenUiState(
             throwError = true
@@ -126,7 +120,7 @@ class TypeDetailsScreenViewModelTest {
 
         // Then
         coVerify(exactly = 1) {
-            getTypeDetailsUseCase.execute(typesToSearch)
+            getTypeDetailsUseCase.execute(listOf("type 1"))
         }
 
         Assert.assertEquals(
@@ -143,23 +137,7 @@ class TypeDetailsScreenViewModelTest {
         )
     }
 
-    private fun getMockedSuccessUseCaseGroundResponse() =
-        Result.success(
-            PokeTypeDetails(
-                name = "ground",
-                attackerTypesRelation = listOf(
-                    Pair(PokeType("electric"), 4.0),
-                ),
-                defenderTypesRelation = listOf(
-                    Pair(PokeType("grass"), 2.0),
-                    Pair(PokeType("water"), 2.0),
-                    Pair(PokeType("electric"), 0.0),
-                    Pair(PokeType("normal"), 0.5),
-                ),
-            )
-        )
-
-    private fun getMockedSuccessUseCaseDragonResponse() =
+    private fun getMockedSuccessUseCaseResponse() =
         Result.success(
             PokeTypeDetails(
                 name = "dragon",
@@ -173,15 +151,10 @@ class TypeDetailsScreenViewModelTest {
                     Pair(PokeType("water"), 0.5),
                     Pair(PokeType("fire"), 0.5),
                     Pair(PokeType("normal"), 0.5),
-                    Pair(PokeType("electric"), 0.5),
-                    Pair(PokeType("ground"), 100.0),
+                    Pair(PokeType("electric"), 0.0),
+                    Pair(PokeType("ground"), 0.25),
                 ),
             )
-        )
-
-    private fun getMockedSuccessUseCaseDefaultResponse() =
-        Result.success(
-            PokeTypeDetails()
         )
 
     private fun getMockedFailureUseCaseResponse() =

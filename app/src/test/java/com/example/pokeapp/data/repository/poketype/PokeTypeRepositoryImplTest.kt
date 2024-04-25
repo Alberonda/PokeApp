@@ -1,5 +1,7 @@
 package com.example.pokeapp.data.repository.poketype
 
+import com.example.pokeapp.base.Constants
+import com.example.pokeapp.base.mergeByKeys
 import com.example.pokeapp.data.source.network.PokeTypeNetworkDataSource
 import com.example.pokeapp.data.source.network.entity.AllTypesResponse
 import com.example.pokeapp.data.source.network.entity.ApiPokeType
@@ -8,6 +10,7 @@ import com.example.pokeapp.data.source.network.entity.TypeDetailsResponse
 import com.example.pokeapp.domain.entity.PokeType
 import com.example.pokeapp.domain.entity.PokeTypeDetails
 import io.mockk.coEvery
+import io.mockk.coVerify
 import kotlinx.coroutines.test.runTest
 import io.mockk.mockk
 import org.junit.Assert
@@ -27,22 +30,41 @@ class PokeTypeRepositoryImplTest {
     @Test
     fun getTypeDetails() = runTest {
         // Given
-        val typeNameToSearch = "example name"
+        val typesToSearch = listOf("type1", "type2")
         val serverResponse = getMockedTypeDetailsResponse()
 
-        coEvery { networkDataSource.getTypeData(typeNameToSearch) } returns serverResponse
+        coEvery { networkDataSource.getTypeData(any()) } returns serverResponse
 
-        val expectedResult = PokeTypeDetails.fromDataEntity(
+        val mappedResponses = listOf(
+            serverResponse,
             serverResponse
+        ).map {
+            PokeTypeDetails.fromDataEntity(it)
+        }
+
+        val expectedResult = PokeTypeDetails(
+            mappedResponses.joinToString(
+                Constants.TYPES_NAMES_SEPARATOR
+            ) { it.name },
+            mappedResponses.flatMap {
+                it.attackerTypesRelation
+            }.mergeByKeys { a: Double, b: Double -> a * b },
+            mappedResponses.flatMap {
+                it.defenderTypesRelation
+            }.mergeByKeys { a: Double, b: Double -> a * b }
         )
 
         // When
-        val result = repository.getTypeDetails(typeNameToSearch)
+        val result = repository.getTypesDetails(typesToSearch)
 
         // Then
+        coVerify {
+            networkDataSource.getTypeData("type1")
+            networkDataSource.getTypeData("type2")
+        }
         Assert.assertEquals(
-            result,
-            expectedResult
+            expectedResult,
+            result
         )
     }
 

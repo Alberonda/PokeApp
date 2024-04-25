@@ -3,6 +3,7 @@ package com.example.pokeapp.presentation.typedetails
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pokeapp.base.Constants.TYPES_NAMES_SEPARATOR
 import com.example.pokeapp.di.DefaultDispatcher
 import com.example.pokeapp.domain.entity.PokeType
 import com.example.pokeapp.domain.entity.PokeTypeDetails
@@ -17,8 +18,6 @@ import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
 import com.example.pokeapp.ui.navigation.TypeDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,7 +37,7 @@ class TypeDetailsScreenViewModel @Inject constructor(
 
     private val typesToSearch: List<String> = checkNotNull<String>(
         savedStateHandle[TypeDetails.selectedTypeArg]
-    ).split(NAMES_SEPARATOR).filterNot { it.isBlank() }
+    ).split(TYPES_NAMES_SEPARATOR).filterNot { it.isBlank() }
 
     private val searchedTypesAsUiData
         get() = PokeTypeUiData.mapDomainToUiEntities(
@@ -46,57 +45,31 @@ class TypeDetailsScreenViewModel @Inject constructor(
         )
 
     init {
-        getTypeDetails(typesToSearch)
-    }
-
-    companion object {
-        const val NAMES_SEPARATOR = ", "
+        if (typesToSearch.isNotEmpty()){
+            getTypeDetails(typesToSearch)
+        } else {
+            _uiState.value = TypeDetailsScreenUiState(throwError = true)
+        }
     }
 
     private fun getTypeDetails(typesToSearch: List<String>) {
         _uiState.value = TypeDetailsScreenUiState(isLoading = true, throwError = false)
         viewModelScope.launch {
             withContext(defaultDispatcher) {
-                val deferredResults = typesToSearch.map {
-                    async { getTypeDetailsUseCase.execute(it) }
-                }
-                awaitAll(*deferredResults.toTypedArray())
+                getTypeDetailsUseCase.execute(typesToSearch)
             }.run {
-                val mappedResult = this.filter { it.isSuccess }.mapNotNull {
-                    it.getOrNull()
-                }
-
-                if (mappedResult.isNotEmpty()) {
-                    _uiState.value = TypeDetailsScreenUiState(
-                        typesDetails = mapDomainToUiEntities(
-                            PokeTypeDetails(
-                                name = mappedResult.joinToString(
-                                    NAMES_SEPARATOR
-                                ) { it.name },
-                                attackerTypesRelation = mappedResult.flatMap { it.attackerTypesRelation },
-                                defenderTypesRelation = mappedResult.flatMap { it.defenderTypesRelation }
-                            )
-                        )
+                _uiState.value = this.getOrNull()?.let {
+                    TypeDetailsScreenUiState(
+                        typesDetails = mapDomainToUiEntities(it)
                     )
-                } else {
-                    _uiState.value = TypeDetailsScreenUiState(throwError = true)
-                }
+                } ?: TypeDetailsScreenUiState(throwError = true)
             }
         }
     }
 
     private fun mapDomainToUiEntities(typeDetails: PokeTypeDetails): TypeDetailsScreenUiData {
 
-        val groupedRelations = typeDetails.defenderTypesRelation.groupBy {
-            it.first
-        }.mapValues { (_, relations) ->
-            relations.reduce { acc, next ->
-                Pair(
-                    acc.first,
-                    acc.second * next.second
-                )
-            }
-        }.values.mapNotNull { relationPair ->
+        val uiResourcesRelations = typeDetails.defenderTypesRelation.mapNotNull { relationPair ->
             PokeTypeUiData.mapDomainToUiResources(relationPair.first)?.let { typeResources ->
                 Pair(
                     PokeTypeUiData(typeResources),
@@ -107,15 +80,15 @@ class TypeDetailsScreenViewModel @Inject constructor(
 
         return TypeDetailsScreenUiData(
             searchedTypes = searchedTypesAsUiData,
-            veryEffectiveRelations = groupedRelations.filter { it.second == QUAD_DAMAGE_FACTOR }
+            veryEffectiveRelations = uiResourcesRelations.filter { it.second == QUAD_DAMAGE_FACTOR }
                 .map { it.first },
-            effectiveRelations = groupedRelations.filter { it.second == DOUBLE_DAMAGE_FACTOR }
+            effectiveRelations = uiResourcesRelations.filter { it.second == DOUBLE_DAMAGE_FACTOR }
                 .map { it.first },
-            notEffectiveRelations = groupedRelations.filter { it.second == HALF_DAMAGE_FACTOR }
+            notEffectiveRelations = uiResourcesRelations.filter { it.second == HALF_DAMAGE_FACTOR }
                 .map { it.first },
-            veryNotEffectiveRelations = groupedRelations.filter { it.second == QUARTER_DAMAGE_FACTOR }
+            veryNotEffectiveRelations = uiResourcesRelations.filter { it.second == QUARTER_DAMAGE_FACTOR }
                 .map { it.first },
-            unaffectedRelations = groupedRelations.filter { it.second == NO_DAMAGE_FACTOR }
+            unaffectedRelations = uiResourcesRelations.filter { it.second == NO_DAMAGE_FACTOR }
                 .map { it.first },
         )
     }

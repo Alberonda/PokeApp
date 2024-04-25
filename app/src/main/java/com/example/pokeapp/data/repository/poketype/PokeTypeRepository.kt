@@ -5,5 +5,5 @@ import com.example.pokeapp.domain.entity.PokeTypeDetails
 
 interface PokeTypeRepository {
     suspend fun getAllTypes(): List<PokeType>
-    suspend fun getTypeDetails(typeName: String): PokeTypeDetails
+    suspend fun getTypesDetails(typeNames: List<String>): PokeTypeDetails
 }

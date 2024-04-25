@@ -8,10 +8,10 @@ class GetTypeDetailsUseCaseImpl @Inject constructor(
     private val pokeTypeRepository: PokeTypeRepository
 ): GetTypeDetailsUseCase {
 
-    override suspend fun execute(typeName: String): Result<PokeTypeDetails> =
+    override suspend fun execute(typeNames: List<String>): Result<PokeTypeDetails> =
         try {
             Result.success(
-                pokeTypeRepository.getTypeDetails(typeName)
+                pokeTypeRepository.getTypesDetails(typeNames)
             )
         } catch (e: Exception) {
             Result.failure(e)
