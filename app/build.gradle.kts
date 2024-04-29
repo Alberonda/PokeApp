@@ -182,6 +182,10 @@ val exclusions = listOf(
     "**/*Retrofit*.*",
     "**/compose/**/*",
 
+    // Room
+    "**/converters/**",
+    "**/*DataBase*.*",
+
     // Uncomment this for instrumented testing
     "**/*Activity*.*",
     "**/navigation/**/*",
