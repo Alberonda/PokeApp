@@ -6,6 +6,7 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs")
+    id("com.google.devtools.ksp")
     jacoco
 }
 
@@ -102,8 +103,17 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
-    //Jacoco
+    // Jacoco
     implementation(libs.org.jacoco.core)
+
+    // Local persistence
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
+
+    ksp(libs.androidx.room.compiler)
+
+    implementation(libs.kotlinx.coroutines.core)
 }
 
 kapt {
@@ -171,6 +181,10 @@ val exclusions = listOf(
     "**/*Application*.*",
     "**/*Retrofit*.*",
     "**/compose/**/*",
+
+    // Room
+    "**/converters/**",
+    "**/*Database*.*",
 
     // Uncomment this for instrumented testing
     "**/*Activity*.*",
