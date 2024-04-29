@@ -184,7 +184,7 @@ val exclusions = listOf(
 
     // Room
     "**/converters/**",
-    "**/*DataBase*.*",
+    "**/*Database*.*",
 
     // Uncomment this for instrumented testing
     "**/*Activity*.*",
