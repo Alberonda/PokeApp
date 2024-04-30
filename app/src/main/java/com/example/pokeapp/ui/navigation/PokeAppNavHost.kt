@@ -9,6 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pokeapp.base.Constants.TYPES_NAMES_SEPARATOR
+import com.example.pokeapp.presentation.abilitysearch.AbilitySearchScreen
+import com.example.pokeapp.presentation.abilitysearch.AbilitySearchScreenViewModel
 import com.example.pokeapp.presentation.typeslanding.AllTypesScreen
 import com.example.pokeapp.presentation.typedetails.TypeDetailsScreen
 import com.example.pokeapp.presentation.typedetails.TypeDetailsScreenViewModel
@@ -69,6 +71,12 @@ fun PokeAppNavHost(
                     navController.popBackStack()
                 },
                 widthSizeClass = widthSizeClass
+            )
+        }
+
+        composable(route = AbilitySearch.route){
+            AbilitySearchScreen(
+                viewModel = hiltViewModel<AbilitySearchScreenViewModel>()
             )
         }
     }

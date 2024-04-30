@@ -13,10 +13,16 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.PokeAppTheme
+import com.example.pokeapp.ui.base.components.PokeAppTabRow
+import com.example.pokeapp.ui.navigation.AllTypes
 import com.example.pokeapp.ui.navigation.PokeAppNavHost
+import com.example.pokeapp.ui.navigation.navigateSingleTopTo
+import com.example.pokeapp.ui.navigation.tabRowScreens
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,7 +42,25 @@ class MainActivity : ComponentActivity() {
 fun PokeApp(windowSize: WindowSizeClass) {
     PokeAppTheme {
         val navController = rememberNavController()
-        Scaffold { innerPadding ->
+
+        val currentBackStack by navController.currentBackStackEntryAsState()
+        val currentDestination = currentBackStack?.destination
+
+        val currentScreen = tabRowScreens.find {
+            it.route == currentDestination?.route
+        } ?: AllTypes
+
+        Scaffold(
+            topBar = {
+                PokeAppTabRow(
+                    allScreens = tabRowScreens,
+                    onTabSelected = { screen ->
+                        navController.navigateSingleTopTo(screen.route)
+                    },
+                    currentScreen = currentScreen
+                )
+            }
+        ) { innerPadding ->
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.primaryContainer
