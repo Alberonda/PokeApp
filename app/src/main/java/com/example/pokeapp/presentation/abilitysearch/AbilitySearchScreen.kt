@@ -1,6 +1,5 @@
 package com.example.pokeapp.presentation.abilitysearch
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,9 +16,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.pokeapp.R
+import com.example.pokeapp.base.EMPTY
 import com.example.pokeapp.presentation.abilitysearch.entity.AbilitySearchScreenUiData
 import com.example.pokeapp.ui.base.UiState
 import com.example.pokeapp.ui.base.components.ErrorRetryDialog
@@ -51,7 +50,7 @@ fun AbilitySearchScreen(
         is UiState.Error ->
             ErrorRetryDialog(
                 R.string.type_details_error_dialog_subtitle,
-                onRetryClicked = {},
+                onRetryClicked = { viewModel.getAllAbilitiesData() },
                 onDismissClicked = {}
             )
     }
@@ -74,12 +73,10 @@ fun AbilitySearchScreenWithData(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        LazyColumn(
-            modifier = Modifier.background(Color.Gray)
-        ) {
-            items(screenData.abilitiesList) { country ->
+        LazyColumn {
+            items(screenData.suggestedAbilities) { ability ->
                 Text(
-                    text = country,
+                    text = ability.name,
                     modifier = Modifier.padding(
                         start = 8.dp,
                         top = 4.dp,

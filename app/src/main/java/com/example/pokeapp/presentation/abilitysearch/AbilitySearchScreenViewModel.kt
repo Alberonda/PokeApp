@@ -1,48 +1,73 @@
 package com.example.pokeapp.presentation.abilitysearch
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pokeapp.base.EMPTY
 import com.example.pokeapp.di.DefaultDispatcher
+import com.example.pokeapp.domain.entity.PokeAbility
+import com.example.pokeapp.domain.usecase.getallabilities.GetAllAbilitiesUseCase
 import com.example.pokeapp.presentation.abilitysearch.entity.AbilitySearchScreenUiData
 import com.example.pokeapp.ui.base.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class AbilitySearchScreenViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    //private val getTypeDetailsUseCase: GetTypeDetailsUseCase,
+    private val getAllAbilitiesUseCase: GetAllAbilitiesUseCase,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState:
             MutableStateFlow<UiState<AbilitySearchScreenUiData>> = MutableStateFlow(
-                UiState.Success(AbilitySearchScreenUiData())
+                UiState.Loading
             )
     val uiState: StateFlow<UiState<AbilitySearchScreenUiData>> = _uiState.asStateFlow()
 
+    private var allAbilities = emptyList<PokeAbility>()
 
-    private val _cachedAbilities = listOf("aaa", "bbb")
-    val cachedAbilities = _cachedAbilities
+    init {
+        getAllAbilitiesData()
+    }
 
-    private val _abilitiesList = MutableStateFlow(cachedAbilities)
-    val abilitiesList = _abilitiesList.value
+    fun getAllAbilitiesData() {
+        _uiState.value = UiState.Loading
+        viewModelScope.launch {
+            try {
+                withContext(defaultDispatcher) {
+                    getAllAbilitiesUseCase.execute()
+                }.run {
+                    if (this.isSuccess) {
+                        allAbilities = this.getOrDefault(emptyList())
+                        _uiState.value =
+                            UiState.Success(
+                                AbilitySearchScreenUiData(
+                                    isSearching = false,
+                                    searchText = String.EMPTY,
+                                    suggestedAbilities = getSuggestedAbilities(String.EMPTY),
+                                )
+                            )
+                    } else {
+                        _uiState.value = UiState.Error()
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error()
+            }
+        }
+    }
 
     fun onSearchTextChange(text: String) {
-        (uiState.value as? UiState.Success)?.let { currentState ->
+        (uiState.value as? UiState.Success)?.data?.let { currentState ->
             _uiState.value = UiState.Success(AbilitySearchScreenUiData(
-                isSearching = currentState.data.isSearching,
+                isSearching = currentState.isSearching,
                 searchText = text,
-                abilitiesList = abilitiesList,
+                suggestedAbilities = getSuggestedAbilities(text),
             ))
         }
     }
@@ -52,11 +77,20 @@ class AbilitySearchScreenViewModel @Inject constructor(
             _uiState.value = UiState.Success(AbilitySearchScreenUiData(
                 isSearching = selectedSearch,
                 searchText = currentState.searchText,
-                abilitiesList = currentState.abilitiesList,
+                suggestedAbilities = currentState.suggestedAbilities,
             ))
             if (!currentState.isSearching) {
                 onSearchTextChange("")
             }
+        }
+    }
+
+    private fun getSuggestedAbilities(searchText: String): List<PokeAbility> {
+        if (searchText.isBlank()) {
+            emptyList<PokeAbility>()
+        }
+        return allAbilities.filter { ability ->
+            ability.name.uppercase().contains(searchText.trim().uppercase())
         }
     }
 }

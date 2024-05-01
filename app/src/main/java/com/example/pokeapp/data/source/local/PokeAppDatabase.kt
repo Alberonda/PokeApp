@@ -6,27 +6,33 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.pokeapp.data.source.local.converters.DateConverters
-import com.example.pokeapp.data.source.local.converters.ListConverters
+import com.example.pokeapp.data.source.local.converters.CustomConverters
+import com.example.pokeapp.data.source.local.entity.LocalAllAbilitiesResponse
 import com.example.pokeapp.data.source.local.entity.PokeType
 
-@Database(entities = [PokeType::class], version = 1, exportSchema = false)
+@Database(
+    entities = [PokeType::class, LocalAllAbilitiesResponse::class],
+    version = 2,
+    exportSchema = false
+)
 @TypeConverters(
-    ListConverters::class,
+    CustomConverters::class,
     DateConverters::class
 )
-abstract class PokeTypeDatabase : RoomDatabase() {
+abstract class PokeAppDatabase : RoomDatabase() {
     abstract fun pokeTypeDao(): PokeTypeLocalDataSource
+    abstract fun pokeAbilityDao(): PokeAbilityLocalDataSource
 
     companion object {
         @Volatile
-        private var INSTANCE: PokeTypeDatabase? = null
+        private var INSTANCE: PokeAppDatabase? = null
 
-        fun getDatabase(context: Context): PokeTypeDatabase {
+        fun getDatabase(context: Context): PokeAppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context,
-                    PokeTypeDatabase::class.java,
-                    "poke_type_db")
+                    PokeAppDatabase::class.java,
+                    "poke_app_db")
                     .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
