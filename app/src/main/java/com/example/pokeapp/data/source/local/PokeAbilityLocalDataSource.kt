@@ -11,15 +11,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PokeAbilityLocalDataSource {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(ability: LocalAllAbilitiesResponse)
+    fun insertAll(ability: LocalAllAbilitiesResponse)
 
     @Query("SELECT * FROM localAllAbilitiesResponse")
-    fun getAll(): Flow<LocalAllAbilitiesResponse>
+    fun getAll(): Flow<LocalAllAbilitiesResponse?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(ability: LocalAbilityDetailsResponse)
+    fun insertDetails(ability: LocalAbilityDetailsResponse)
 
     @Query("SELECT * FROM localAbilityDetailsResponse WHERE abilityName = :abilityName")
-    fun getDetails(abilityName: String): Flow<LocalAbilityDetailsResponse>
+    fun getDetails(abilityName: String): Flow<LocalAbilityDetailsResponse?>
 
 }

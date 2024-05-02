@@ -40,26 +40,22 @@ class AbilityDataSource @Inject constructor(
         ) {
             getAllAbilitiesFromRemote()
         } else {
-            localData.value.results.map {
-                it.toDomainEntity()
-            }
+            localData.value.toDomainEntity()
         }
     }
 
     private suspend fun getAllAbilitiesFromRemote(): List<PokeAbility> {
         val networkResponse = pokeAbilityNetworkDataSource.getAllAbilities()
 
-        pokeAbilityLocalDataSource.insert(LocalAllAbilitiesResponse.fromNetworkEntity(networkResponse))
+        pokeAbilityLocalDataSource.insertAll(LocalAllAbilitiesResponse.fromNetworkEntity(networkResponse))
 
-        return networkResponse.results.map {
-            it.toDomainEntity()
-        }
+        return networkResponse.toDomainEntity()
     }
 
     private suspend fun getAbilityDetailsFromRemote(abilityName: String): PokeAbility {
         val networkResponse = pokeAbilityNetworkDataSource.getAbilityData(abilityName)
 
-        pokeAbilityLocalDataSource.insert(LocalAbilityDetailsResponse.fromNetworkEntity(networkResponse))
+        pokeAbilityLocalDataSource.insertDetails(LocalAbilityDetailsResponse.fromNetworkEntity(networkResponse))
 
         return networkResponse.toDomainEntity()
     }
