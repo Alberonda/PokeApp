@@ -44,10 +44,10 @@ fun PokeApp(windowSize: WindowSizeClass) {
         val navController = rememberNavController()
 
         val currentBackStack by navController.currentBackStackEntryAsState()
-        val currentDestination = currentBackStack?.destination
+        val currentDestination = currentBackStack?.destination?.route
 
         val currentScreen = tabRowScreens.find {
-            it.route == currentDestination?.route
+            currentDestination?.contains(it.route) ?: false
         } ?: AllTypes
 
         Scaffold(

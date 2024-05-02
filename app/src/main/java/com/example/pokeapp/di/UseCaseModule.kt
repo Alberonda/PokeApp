@@ -1,5 +1,7 @@
 package com.example.pokeapp.di
 
+import com.example.pokeapp.domain.usecase.getallabilities.GetAbilityDetailsUseCase
+import com.example.pokeapp.domain.usecase.getallabilities.GetAbilityDetailsUseCaseImpl
 import com.example.pokeapp.domain.usecase.getallabilities.GetAllAbilitiesUseCase
 import com.example.pokeapp.domain.usecase.getallabilities.GetAllAbilitiesUseCaseImpl
 import com.example.pokeapp.domain.usecase.getalltypes.GetAllTypesUseCase
@@ -23,4 +25,8 @@ abstract class UseCaseModule {
 
     @Binds
     abstract fun provideGetAllAbilitiesUseCase(impl: GetAllAbilitiesUseCaseImpl): GetAllAbilitiesUseCase
+
+    @Binds
+    abstract fun provideGetAbilityDetailsUseCase(impl: GetAbilityDetailsUseCaseImpl): GetAbilityDetailsUseCase
+
 }

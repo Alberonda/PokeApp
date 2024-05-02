@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.pokeapp.data.source.local.entity.LocalAbilityDetailsResponse
 import com.example.pokeapp.data.source.local.entity.LocalAllAbilitiesResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -14,4 +15,11 @@ interface PokeAbilityLocalDataSource {
 
     @Query("SELECT * FROM localAllAbilitiesResponse")
     fun getAll(): Flow<LocalAllAbilitiesResponse>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(ability: LocalAbilityDetailsResponse)
+
+    @Query("SELECT * FROM localAbilityDetailsResponse WHERE abilityName = :abilityName")
+    fun getDetails(abilityName: String): Flow<LocalAbilityDetailsResponse>
+
 }

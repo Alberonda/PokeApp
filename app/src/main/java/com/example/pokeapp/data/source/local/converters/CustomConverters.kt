@@ -1,7 +1,9 @@
 package com.example.pokeapp.data.source.local.converters
 
 import androidx.room.TypeConverter
+import com.example.pokeapp.base.EMPTY
 import com.example.pokeapp.data.source.local.entity.PokeType
+import com.example.pokeapp.data.source.network.entity.NetworkAbilityDetailsResponse
 import com.example.pokeapp.data.source.network.entity.NetworkAllAbilitiesResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -36,6 +38,20 @@ object CustomConverters {
             Gson().fromJson<NetworkAllAbilitiesResponse>(value)
         } catch (e: Exception) {
             NetworkAllAbilitiesResponse(emptyList())
+        }
+    }
+
+    @TypeConverter
+    fun fromNetworkAbilityDetailsResponse(value: NetworkAbilityDetailsResponse): String {
+        return Gson().toJson(value)
+    }
+
+    @TypeConverter
+    fun toNetworkAbilityDetailsResponse(value: String): NetworkAbilityDetailsResponse {
+        return try {
+            Gson().fromJson<NetworkAbilityDetailsResponse>(value)
+        } catch (e: Exception) {
+            NetworkAbilityDetailsResponse(String.EMPTY, emptyList())
         }
     }
 

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.pokeapp.di.DefaultDispatcher
 import com.example.pokeapp.domain.usecase.getalltypes.GetAllTypesUseCase
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
-import com.example.pokeapp.presentation.typeslanding.entity.TypesLandingScreenUiData
 import com.example.pokeapp.ui.base.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

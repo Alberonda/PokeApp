@@ -7,11 +7,16 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.pokeapp.data.source.local.converters.DateConverters
 import com.example.pokeapp.data.source.local.converters.CustomConverters
+import com.example.pokeapp.data.source.local.entity.LocalAbilityDetailsResponse
 import com.example.pokeapp.data.source.local.entity.LocalAllAbilitiesResponse
 import com.example.pokeapp.data.source.local.entity.PokeType
 
 @Database(
-    entities = [PokeType::class, LocalAllAbilitiesResponse::class],
+    entities = [
+        PokeType::class,
+        LocalAllAbilitiesResponse::class,
+        LocalAbilityDetailsResponse::class
+    ],
     version = 2,
     exportSchema = false
 )

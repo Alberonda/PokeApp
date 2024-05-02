@@ -13,7 +13,6 @@ import com.example.pokeapp.domain.entity.PokeTypeDetails.Companion.NO_DAMAGE_FAC
 import com.example.pokeapp.domain.entity.PokeTypeDetails.Companion.QUAD_DAMAGE_FACTOR
 import com.example.pokeapp.domain.entity.PokeTypeDetails.Companion.QUARTER_DAMAGE_FACTOR
 import com.example.pokeapp.domain.usecase.gettypedetails.GetTypeDetailsUseCase
-import com.example.pokeapp.presentation.typedetails.entity.TypeDetailsScreenUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
 import com.example.pokeapp.ui.base.UiState
 import com.example.pokeapp.ui.navigation.TypeDetails
