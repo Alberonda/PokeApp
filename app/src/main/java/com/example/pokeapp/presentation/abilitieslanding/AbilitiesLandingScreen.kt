@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,9 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.pokeapp.R
 import com.example.pokeapp.base.capitalizeValue
+import com.example.pokeapp.domain.entity.OtherLanguageName
 import com.example.pokeapp.domain.entity.PokeAbility
 import com.example.pokeapp.domain.entity.PokeAbilityName
 import com.example.pokeapp.ui.base.UiState
@@ -162,14 +164,49 @@ fun AbilityDetailsContainer(
                 .fillMaxWidth()
                 .padding(vertical = 4.dp)
         )
-        Text(
-            text = stringResource(R.string.effect_title),
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp)
+        HorizontalDivider(
+            thickness = 5.dp,
+            color = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
         )
+        OtherLanguagesContainer(abilityDetails.otherNames)
+    }
+}
+
+@Composable
+fun OtherLanguagesContainer(otherNames: List<OtherLanguageName>) {
+    Text(
+        text = stringResource(R.string.other_languages_title),
+        style = MaterialTheme.typography.bodyLarge,
+        textAlign = TextAlign.Start,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    )
+    LazyColumn {
+        items(otherNames) {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = it.language.uppercase(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .padding(vertical = 4.dp)
+                        .padding(end = 8.dp)
+                )
+
+                Text(
+                    text = it.value,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .padding(vertical = 4.dp)
+                        .padding(end = 8.dp)
+                )
+            }
+        }
     }
 }
 

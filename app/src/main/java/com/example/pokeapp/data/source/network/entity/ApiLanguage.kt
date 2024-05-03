@@ -8,5 +8,7 @@ data class ApiLanguage(
 ) {
     companion object {
         const val ENGLISH_CODE = "en"
+        const val SPANISH_CODE = "es"
+        const val JAPANESE_CODE = "ja"
     }
 }

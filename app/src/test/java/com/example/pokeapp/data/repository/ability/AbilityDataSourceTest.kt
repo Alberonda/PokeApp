@@ -8,6 +8,7 @@ import com.example.pokeapp.data.source.local.entity.LocalAllAbilitiesResponse
 import com.example.pokeapp.data.source.network.PokeAbilityNetworkDataSource
 import com.example.pokeapp.data.source.network.entity.ApiEffectEntry
 import com.example.pokeapp.data.source.network.entity.ApiLanguage
+import com.example.pokeapp.data.source.network.entity.ApiNameEntry
 import com.example.pokeapp.data.source.network.entity.ApiPokeAbility
 import com.example.pokeapp.data.source.network.entity.NetworkAbilityDetailsResponse
 import com.example.pokeapp.data.source.network.entity.NetworkAllAbilitiesResponse
@@ -281,6 +282,22 @@ class AbilityDataSourceTest {
                         url = String.EMPTY
                     ),
                     effect = "Effect text"
+                )
+            ),
+            otherNames = listOf(
+                ApiNameEntry(
+                    language = ApiLanguage(
+                        code = "es",
+                        url = String.EMPTY
+                    ),
+                    name = "ability name"
+                ),
+                ApiNameEntry(
+                    language = ApiLanguage(
+                        code = "de",
+                        url = String.EMPTY
+                    ),
+                    name = "ability name"
                 )
             )
         )

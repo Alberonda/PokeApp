@@ -51,7 +51,7 @@ object CustomConverters {
         return try {
             Gson().fromJson<NetworkAbilityDetailsResponse>(value)
         } catch (e: Exception) {
-            NetworkAbilityDetailsResponse(String.EMPTY, emptyList())
+            NetworkAbilityDetailsResponse(String.EMPTY, emptyList(), emptyList())
         }
     }
 
