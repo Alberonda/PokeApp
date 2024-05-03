@@ -3,7 +3,6 @@ package com.example.pokeapp.presentation.typeslanding
 import com.example.pokeapp.domain.entity.PokeType
 import com.example.pokeapp.domain.usecase.getalltypes.GetAllTypesUseCase
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
-import com.example.pokeapp.presentation.typeslanding.entity.TypesLandingScreenUiData
 import com.example.pokeapp.ui.base.UiState
 import com.example.pokeapp.utils.MainCoroutineRule
 import io.mockk.coEvery

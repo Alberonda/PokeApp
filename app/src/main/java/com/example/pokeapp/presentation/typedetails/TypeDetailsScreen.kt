@@ -40,7 +40,6 @@ import com.example.compose.PokeAppTheme
 import com.example.pokeapp.R
 import com.example.pokeapp.base.SLASH
 import com.example.pokeapp.ui.base.components.ErrorDialog
-import com.example.pokeapp.presentation.typedetails.entity.TypeDetailsScreenUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiResources
 import com.example.pokeapp.ui.base.UiState

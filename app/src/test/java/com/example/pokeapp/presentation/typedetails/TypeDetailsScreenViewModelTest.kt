@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.pokeapp.domain.entity.PokeType
 import com.example.pokeapp.domain.entity.PokeTypeDetails
 import com.example.pokeapp.domain.usecase.gettypedetails.GetTypeDetailsUseCase
-import com.example.pokeapp.presentation.typedetails.entity.TypeDetailsScreenUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiResources
 import com.example.pokeapp.ui.base.UiState

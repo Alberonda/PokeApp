@@ -7,10 +7,10 @@ import retrofit2.http.Path
 
 interface PokeTypeNetworkDataSource {
 
-    @GET("api/v2/type")
+    @GET("type")
     suspend fun getAllTypes(): AllTypesResponse
 
-    @GET("api/v2/type/{typeName}")
+    @GET("type/{typeName}")
     suspend fun getTypeData(
         @Path("typeName") typeName: String
     ): TypeDetailsResponse

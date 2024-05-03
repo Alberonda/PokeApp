@@ -2,7 +2,7 @@ package com.example.pokeapp.data.repository.poketype
 
 import com.example.pokeapp.base.Constants
 import com.example.pokeapp.base.mergeByKeys
-import com.example.pokeapp.data.source.local.PokeTypeDatabase
+import com.example.pokeapp.data.source.local.PokeAppDatabase
 import com.example.pokeapp.data.source.local.PokeTypeLocalDataSource
 import com.example.pokeapp.data.source.network.PokeTypeNetworkDataSource
 import com.example.pokeapp.data.source.network.entity.AllTypesResponse
@@ -229,7 +229,7 @@ class PokeTypeDataSourceTest {
 
     private fun getExpiredDate(): Date =
         Date.from(Instant.now().minus(
-            PokeTypeDatabase.CACHE_TIME_MINUTES.toLong(),
+            PokeAppDatabase.CACHE_TIME_MINUTES.toLong(),
             ChronoUnit.MINUTES)
         )
 

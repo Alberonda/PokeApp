@@ -1,8 +1,8 @@
 package com.example.pokeapp.di
 
 import android.content.Context
-import androidx.room.Room
-import com.example.pokeapp.data.source.local.PokeTypeDatabase
+import com.example.pokeapp.data.source.local.PokeAbilityLocalDataSource
+import com.example.pokeapp.data.source.local.PokeAppDatabase
 import com.example.pokeapp.data.source.local.PokeTypeLocalDataSource
 import dagger.Module
 import dagger.Provides
@@ -17,11 +17,17 @@ object DatabaseModule {
 
     @Provides
     fun providePokeTypeLocalDataSource(
-        pokeTypeDatabase: PokeTypeDatabase
+        pokeTypeDatabase: PokeAppDatabase
     ): PokeTypeLocalDataSource = pokeTypeDatabase.pokeTypeDao()
 
     @Provides
+    fun providePokeAbilityLocalDataSource(
+        pokeTypeDatabase: PokeAppDatabase
+    ): PokeAbilityLocalDataSource = pokeTypeDatabase.pokeAbilityDao()
+
+
+    @Provides
     @Singleton
-    fun providePokeTypeDatabase(@ApplicationContext context: Context): PokeTypeDatabase =
-        PokeTypeDatabase.getDatabase(context)
+    fun providePokeTypeDatabase(@ApplicationContext context: Context): PokeAppDatabase =
+        PokeAppDatabase.getDatabase(context)
 }

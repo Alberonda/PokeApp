@@ -1,4 +1,4 @@
-package com.example.pokeapp.presentation.typedetails.entity
+package com.example.pokeapp.presentation.typedetails
 
 import com.example.pokeapp.presentation.typeslanding.entity.PokeTypeUiData
 

@@ -1,5 +1,7 @@
 package com.example.pokeapp.di
 
+import com.example.pokeapp.data.repository.ability.AbilityDataSource
+import com.example.pokeapp.data.repository.ability.AbilityRepository
 import com.example.pokeapp.data.repository.poketype.PokeTypeRepository
 import com.example.pokeapp.data.repository.poketype.PokeTypeDataSource
 import dagger.Binds
@@ -13,4 +15,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun providePokeTypeRepository(impl: PokeTypeDataSource): PokeTypeRepository
+
+    @Binds
+    abstract fun providePokeAbilityRepository(impl: AbilityDataSource): AbilityRepository
 }

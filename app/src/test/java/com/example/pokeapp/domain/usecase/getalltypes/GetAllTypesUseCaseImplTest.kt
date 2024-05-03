@@ -9,7 +9,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-
 class GetAllTypesUseCaseImplTest {
 
     private lateinit var useCase: GetAllTypesUseCaseImpl

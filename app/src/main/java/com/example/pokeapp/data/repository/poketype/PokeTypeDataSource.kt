@@ -3,7 +3,7 @@ package com.example.pokeapp.data.repository.poketype
 import com.example.pokeapp.base.Constants.TYPES_NAMES_SEPARATOR
 import com.example.pokeapp.base.getDifferenceInMinutes
 import com.example.pokeapp.base.mergeByKeys
-import com.example.pokeapp.data.source.local.PokeTypeDatabase.Companion.CACHE_TIME_MINUTES
+import com.example.pokeapp.data.source.local.PokeAppDatabase.Companion.CACHE_TIME_MINUTES
 import com.example.pokeapp.data.source.local.PokeTypeLocalDataSource
 import com.example.pokeapp.data.source.network.PokeTypeNetworkDataSource
 import com.example.pokeapp.domain.entity.PokeType

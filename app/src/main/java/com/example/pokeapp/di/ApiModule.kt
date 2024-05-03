@@ -1,5 +1,6 @@
 package com.example.pokeapp.di
 
+import com.example.pokeapp.data.source.network.PokeAbilityNetworkDataSource
 import com.example.pokeapp.data.source.network.PokeTypeNetworkDataSource
 import com.example.pokeapp.data.source.network.RetrofitInstance
 import dagger.Module
@@ -12,5 +13,8 @@ import dagger.hilt.android.components.ViewModelComponent
 object ApiModule {
 
     @Provides
-    fun providePokeTypeNetworkDataSource(): PokeTypeNetworkDataSource = RetrofitInstance.api
+    fun providePokeTypeNetworkDataSource(): PokeTypeNetworkDataSource = RetrofitInstance.getInstance()
+
+    @Provides
+    fun providePokeAbilityNetworkDataSource(): PokeAbilityNetworkDataSource = RetrofitInstance.getInstance()
 }

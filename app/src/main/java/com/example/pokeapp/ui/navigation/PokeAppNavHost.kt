@@ -9,6 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pokeapp.base.Constants.TYPES_NAMES_SEPARATOR
+import com.example.pokeapp.presentation.abilitieslanding.AbilitiesLandingScreen
+import com.example.pokeapp.presentation.abilitieslanding.AbilitiesLandingScreenViewModel
 import com.example.pokeapp.presentation.typeslanding.AllTypesScreen
 import com.example.pokeapp.presentation.typedetails.TypeDetailsScreen
 import com.example.pokeapp.presentation.typedetails.TypeDetailsScreenViewModel
@@ -71,6 +73,12 @@ fun PokeAppNavHost(
                 widthSizeClass = widthSizeClass
             )
         }
+
+        composable(route = AbilitySearch.route){
+            AbilitiesLandingScreen(
+                viewModel = hiltViewModel<AbilitiesLandingScreenViewModel>()
+            )
+        }
     }
 }
 
@@ -85,7 +93,13 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         restoreState = true
     }
 
+fun NavHostController.navigateToChild(route: String) =
+    this.navigate(route) {
+        launchSingleTop = true
+        restoreState = true
+    }
+
 private fun NavHostController.navigateToTypeDetails(selectedTypes: String) =
-    this.navigateSingleTopTo(
-        "${TypeDetails.route}/$selectedTypes"
+    this.navigateToChild(
+        "${TypeDetails.route}/$selectedTypes",
     )
