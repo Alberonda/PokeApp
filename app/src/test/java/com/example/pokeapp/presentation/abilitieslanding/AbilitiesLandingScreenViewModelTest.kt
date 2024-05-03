@@ -211,7 +211,7 @@ class AbilitiesLandingScreenViewModelTest {
             AbilitiesLandingScreenUiData(
                 isSearching = toggleSearch,
                 searchText = String.EMPTY,
-                suggestedAbilities = useCaseResponse.getOrNull()!!,
+                suggestedAbilities = useCaseResponse.getOrNull()!!
             )
         )
 
