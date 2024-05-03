@@ -1,10 +1,11 @@
-package com.example.pokeapp.presentation.abilitylanding
+package com.example.pokeapp.presentation.abilitieslanding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokeapp.base.EMPTY
 import com.example.pokeapp.di.DefaultDispatcher
 import com.example.pokeapp.domain.entity.PokeAbility
+import com.example.pokeapp.domain.entity.PokeAbilityName
 import com.example.pokeapp.domain.usecase.getallabilities.GetAbilityDetailsUseCase
 import com.example.pokeapp.domain.usecase.getallabilities.GetAllAbilitiesUseCase
 import com.example.pokeapp.ui.base.UiState
@@ -18,19 +19,19 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class AbilityLandingScreenViewModel @Inject constructor(
+class AbilitiesLandingScreenViewModel @Inject constructor(
     private val getAllAbilitiesUseCase: GetAllAbilitiesUseCase,
     private val getAbilityDetailsUseCase: GetAbilityDetailsUseCase,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState:
-            MutableStateFlow<UiState<AbilityLandingScreenUiData>> = MutableStateFlow(
+            MutableStateFlow<UiState<AbilitiesLandingScreenUiData>> = MutableStateFlow(
                 UiState.Loading
             )
-    val uiState: StateFlow<UiState<AbilityLandingScreenUiData>> = _uiState.asStateFlow()
+    val uiState: StateFlow<UiState<AbilitiesLandingScreenUiData>> = _uiState.asStateFlow()
 
-    private var allAbilities = emptyList<PokeAbility>()
+    private var allAbilities = emptyList<PokeAbilityName>()
 
     init {
         getAllAbilitiesData()
@@ -47,7 +48,7 @@ class AbilityLandingScreenViewModel @Inject constructor(
                         allAbilities = this.getOrDefault(emptyList())
                         _uiState.value =
                             UiState.Success(
-                                AbilityLandingScreenUiData(
+                                AbilitiesLandingScreenUiData(
                                     isSearching = false,
                                     searchText = String.EMPTY,
                                     suggestedAbilities = getSuggestedAbilities(String.EMPTY),
@@ -64,40 +65,33 @@ class AbilityLandingScreenViewModel @Inject constructor(
     }
 
     fun onSearchTextChange(text: String) {
-        (uiState.value as? UiState.Success)?.data?.let { currentState ->
+        (uiState.value as? UiState.Success)?.let { currentState ->
             _uiState.value = UiState.Success(
-                AbilityLandingScreenUiData(
-                isSearching = currentState.isSearching,
-                searchText = text,
-                suggestedAbilities = getSuggestedAbilities(text),
-            )
+                    AbilitiesLandingScreenUiData(
+                    isSearching = currentState.data.isSearching,
+                    searchText = text,
+                    suggestedAbilities = getSuggestedAbilities(text),
+                )
             )
         }
     }
 
     fun onToggleSearch(selectedSearch: Boolean) {
-        (uiState.value as? UiState.Success)?.data?.let { currentState ->
+        (uiState.value as? UiState.Success)?.let { currentState ->
             _uiState.value = UiState.Success(
-                AbilityLandingScreenUiData(
-                isSearching = selectedSearch,
-                searchText = currentState.searchText,
-                suggestedAbilities = currentState.suggestedAbilities,
+                    AbilitiesLandingScreenUiData(
+                    isSearching = selectedSearch,
+                    searchText = String.EMPTY,
+                    suggestedAbilities = getSuggestedAbilities(String.EMPTY),
+                )
             )
-            )
-            if (!currentState.isSearching) {
-                onSearchTextChange("")
-            }
         }
     }
 
-    private fun getSuggestedAbilities(searchText: String): List<PokeAbility> {
-        if (searchText.isBlank()) {
-            emptyList<PokeAbility>()
+    private fun getSuggestedAbilities(searchText: String): List<PokeAbilityName> =
+        allAbilities.filter { ability ->
+            ability.value.uppercase().contains(searchText.trim().uppercase())
         }
-        return allAbilities.filter { ability ->
-            ability.name.uppercase().contains(searchText.trim().uppercase())
-        }
-    }
 
     fun getAbilityDetails(abilityToSearch: String) {
         _uiState.value = UiState.Loading
@@ -109,7 +103,7 @@ class AbilityLandingScreenViewModel @Inject constructor(
                     if (this.isSuccess) {
                         _uiState.value =
                             UiState.Success(
-                                AbilityLandingScreenUiData(
+                                AbilitiesLandingScreenUiData(
                                     isSearching = false,
                                     searchText = String.EMPTY,
                                     suggestedAbilities = getSuggestedAbilities(String.EMPTY),

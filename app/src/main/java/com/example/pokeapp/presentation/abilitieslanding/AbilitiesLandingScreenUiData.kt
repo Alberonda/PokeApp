@@ -1,11 +1,12 @@
-package com.example.pokeapp.presentation.abilitylanding
+package com.example.pokeapp.presentation.abilitieslanding
 
 import com.example.pokeapp.base.EMPTY
 import com.example.pokeapp.domain.entity.PokeAbility
+import com.example.pokeapp.domain.entity.PokeAbilityName
 
-data class AbilityLandingScreenUiData (
+data class AbilitiesLandingScreenUiData (
     val isSearching: Boolean = false,
     val searchText: String = String.EMPTY,
-    val suggestedAbilities: List<PokeAbility> = emptyList(),
+    val suggestedAbilities: List<PokeAbilityName> = emptyList(),
     val selectedAbilityData: PokeAbility? = null
 )

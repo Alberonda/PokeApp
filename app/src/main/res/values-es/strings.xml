@@ -49,6 +49,7 @@
     <!-- ABILITY SEARCH SCREEN -->
     <string name="ability_search_error_dialog_subtitle">Hubo un error obteniendo las habilidades desde el servidor. \n Por favor inténtelo de nuevo.</string>
     <string name="effect_title">Efecto</string>
+    <string name="other_languages_title">Otros idiomas</string>
     <string name="ability_search_placeholder">Seleccione una habilidad usando la barra de búsqueda</string>
 
 </resources>

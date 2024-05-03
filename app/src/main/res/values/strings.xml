@@ -49,6 +49,7 @@
     <!-- ABILITY SEARCH SCREEN -->
     <string name="ability_search_error_dialog_subtitle">There was an error obtaining the abilities from server. \n Please try it again.</string>
     <string name="effect_title">Effect</string>
+    <string name="other_languages_title">Other languages</string>
     <string name="ability_search_placeholder">Select one ability using the search bar above</string>
 
 </resources>

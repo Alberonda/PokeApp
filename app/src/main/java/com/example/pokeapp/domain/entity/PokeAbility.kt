@@ -6,3 +6,7 @@ data class PokeAbility(
     val name: String,
     val description: String = String.EMPTY
 )
+
+data class PokeAbilityName(
+    val value: String
+)

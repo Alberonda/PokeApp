@@ -1,10 +1,7 @@
 package com.example.pokeapp.domain.usecase.getallabilities
 
 import com.example.pokeapp.data.repository.ability.AbilityRepository
-import com.example.pokeapp.data.repository.poketype.PokeTypeRepository
-import com.example.pokeapp.domain.entity.PokeAbility
-import com.example.pokeapp.domain.entity.PokeType
-import com.example.pokeapp.domain.usecase.getalltypes.GetAllTypesUseCaseImpl
+import com.example.pokeapp.domain.entity.PokeAbilityName
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -64,7 +61,7 @@ class GetAllAbilitiesUseCaseImplTest {
 
     private fun getMockedAllAbilityResponse() =
         listOf(
-            PokeAbility("ability 1"),
-            PokeAbility("ability 2"),
+            PokeAbilityName("ability 1"),
+            PokeAbilityName("ability 2"),
         )
 }

@@ -9,8 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pokeapp.base.Constants.TYPES_NAMES_SEPARATOR
-import com.example.pokeapp.presentation.abilitylanding.AbilityLandingScreen
-import com.example.pokeapp.presentation.abilitylanding.AbilityLandingScreenViewModel
+import com.example.pokeapp.presentation.abilitieslanding.AbilitiesLandingScreen
+import com.example.pokeapp.presentation.abilitieslanding.AbilitiesLandingScreenViewModel
 import com.example.pokeapp.presentation.typeslanding.AllTypesScreen
 import com.example.pokeapp.presentation.typedetails.TypeDetailsScreen
 import com.example.pokeapp.presentation.typedetails.TypeDetailsScreenViewModel
@@ -75,8 +75,8 @@ fun PokeAppNavHost(
         }
 
         composable(route = AbilitySearch.route){
-            AbilityLandingScreen(
-                viewModel = hiltViewModel<AbilityLandingScreenViewModel>()
+            AbilitiesLandingScreen(
+                viewModel = hiltViewModel<AbilitiesLandingScreenViewModel>()
             )
         }
     }

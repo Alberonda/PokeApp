@@ -7,6 +7,7 @@ import com.example.pokeapp.data.source.local.entity.LocalAbilityDetailsResponse
 import com.example.pokeapp.data.source.local.entity.LocalAllAbilitiesResponse
 import com.example.pokeapp.data.source.network.PokeAbilityNetworkDataSource
 import com.example.pokeapp.domain.entity.PokeAbility
+import com.example.pokeapp.domain.entity.PokeAbilityName
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.Date
 import javax.inject.Inject
@@ -30,7 +31,7 @@ class AbilityDataSource @Inject constructor(
         }
     }
 
-    override suspend fun getAllAbilities(): List<PokeAbility> {
+    override suspend fun getAllAbilities(): List<PokeAbilityName> {
         val localData = pokeAbilityLocalDataSource.getAll()
             .firstOrNull()
 
@@ -44,7 +45,7 @@ class AbilityDataSource @Inject constructor(
         }
     }
 
-    private suspend fun getAllAbilitiesFromRemote(): List<PokeAbility> {
+    private suspend fun getAllAbilitiesFromRemote(): List<PokeAbilityName> {
         val networkResponse = pokeAbilityNetworkDataSource.getAllAbilities()
 
         pokeAbilityLocalDataSource.insertAll(LocalAllAbilitiesResponse.fromNetworkEntity(networkResponse))

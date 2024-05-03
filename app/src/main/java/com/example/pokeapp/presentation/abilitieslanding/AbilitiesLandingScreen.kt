@@ -1,4 +1,4 @@
-package com.example.pokeapp.presentation.abilitylanding
+package com.example.pokeapp.presentation.abilitieslanding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,12 +35,13 @@ import androidx.compose.ui.unit.dp
 import com.example.pokeapp.R
 import com.example.pokeapp.base.capitalizeValue
 import com.example.pokeapp.domain.entity.PokeAbility
+import com.example.pokeapp.domain.entity.PokeAbilityName
 import com.example.pokeapp.ui.base.UiState
 import com.example.pokeapp.ui.base.components.ErrorRetryDialog
 
 @Composable
-fun AbilityLandingScreen(
-    viewModel: AbilityLandingScreenViewModel,
+fun AbilitiesLandingScreen(
+    viewModel: AbilitiesLandingScreenViewModel,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -52,7 +53,7 @@ fun AbilityLandingScreen(
                 viewModel::onSearchTextChange,
                 viewModel::onToggleSearch
             ) {
-                viewModel.getAbilityDetails(it.name)
+                viewModel.getAbilityDetails(it.value)
             }
 
         is UiState.Loading -> {
@@ -76,10 +77,10 @@ fun AbilityLandingScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AbilitySearchScreenWithData(
-    screenData : AbilityLandingScreenUiData,
+    screenData : AbilitiesLandingScreenUiData,
     onSearchTextChange: (String) -> Unit,
     onActiveChange: (Boolean) -> Unit,
-    onItemClicked: (PokeAbility) -> Unit
+    onItemClicked: (PokeAbilityName) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
@@ -96,7 +97,7 @@ fun AbilitySearchScreenWithData(
             LazyColumn {
                 items(screenData.suggestedAbilities) { ability ->
                     Text(
-                        text = ability.name,
+                        text = ability.value,
                         modifier = Modifier
                             .padding(
                                 start = 8.dp,
@@ -114,15 +115,12 @@ fun AbilitySearchScreenWithData(
         }
 
         Card(
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.onTertiary,
-            ),
             modifier = Modifier
-                .fillMaxSize()
                 .padding(vertical = 8.dp)
         ) {
             Surface(
-                modifier = Modifier.background(Color.Red)
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
                 screenData.selectedAbilityData?.let {
                     AbilityDetailsContainer(
@@ -160,6 +158,14 @@ fun AbilityDetailsContainer(
         Text(
             text = abilityDetails.description,
             style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp)
+        )
+        Text(
+            text = stringResource(R.string.effect_title),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Start,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp)
