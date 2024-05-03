@@ -27,8 +27,8 @@ class AbilitiesLandingScreenViewModel @Inject constructor(
 
     private val _uiState:
             MutableStateFlow<UiState<AbilitiesLandingScreenUiData>> = MutableStateFlow(
-                UiState.Loading
-            )
+        UiState.Loading
+    )
     val uiState: StateFlow<UiState<AbilitiesLandingScreenUiData>> = _uiState.asStateFlow()
 
     private var allAbilities = emptyList<PokeAbilityName>()
@@ -67,10 +67,11 @@ class AbilitiesLandingScreenViewModel @Inject constructor(
     fun onSearchTextChange(text: String) {
         (uiState.value as? UiState.Success)?.let { currentState ->
             _uiState.value = UiState.Success(
-                    AbilitiesLandingScreenUiData(
+                AbilitiesLandingScreenUiData(
                     isSearching = currentState.data.isSearching,
                     searchText = text,
                     suggestedAbilities = getSuggestedAbilities(text),
+                    selectedAbilityData = currentState.data.selectedAbilityData
                 )
             )
         }
@@ -79,10 +80,11 @@ class AbilitiesLandingScreenViewModel @Inject constructor(
     fun onToggleSearch(selectedSearch: Boolean) {
         (uiState.value as? UiState.Success)?.let { currentState ->
             _uiState.value = UiState.Success(
-                    AbilitiesLandingScreenUiData(
+                AbilitiesLandingScreenUiData(
                     isSearching = selectedSearch,
                     searchText = String.EMPTY,
                     suggestedAbilities = getSuggestedAbilities(String.EMPTY),
+                    selectedAbilityData = currentState.data.selectedAbilityData
                 )
             )
         }
